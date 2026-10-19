@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Idea Habitat · Jelly</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #e8f6f3;
+        --ink: #16403f;
+        --bar: #d9efeb;
+        --line: #a8d9d2;
+        --btn: #0f7f78;
+        --btnink: #fff;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0f2a2a;
+          --ink: #e3f5f2;
+          --bar: #16403f;
+          --line: #2b6662;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0f2a2a;
+        --ink: #e3f5f2;
+        --bar: #16403f;
+        --line: #2b6662;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Jua", "PingFang SC", "Noto Sans KR", "Noto Sans SC", sans-serif;
+        overflow: hidden;
+      }
+      .bar {
+        display: flex;
+        gap: 6px;
+        padding: 7px 10px;
+        background: var(--bar);
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      input,
+      select,
+      textarea {
+        font: inherit;
+        font-size: 16px;
+        border-radius: 20px;
+        border: 2px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        padding: 8px 12px;
+      }
+      select option {
+        color: #16403f;
+      }
+      .bar input {
+        flex: 1;
+        min-width: 0;
+      }
+      button {
+        font: inherit;
+        border: 0;
+        border-radius: 20px;
+        padding: 8px 12px;
+        background: var(--line);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      button.go,
+      button[aria-pressed="true"] {
+        background: var(--btn);
+        color: var(--btnink);
+      }
+      .ic {
+        display: block;
+        font-size: 17px;
+        line-height: 1.1;
+      }
+      #chips button {
+        padding: 5px 12px;
+        line-height: 1.2;
+      }
+      #hl {
+        font-size: 15px;
+        line-height: 1.7;
+      }
+      #lang {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg);
+        z-index: 10;
+      }
+      #lang.on {
+        display: flex;
+      }
+      #lc {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+      }
+      #lb {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      #lb button {
+        font-size: 22px;
+        padding: 16px 24px;
+      }
+      #langs button {
+        padding: 5px 10px;
+      }
+      .compose #in {
+        flex: 1 1 100%;
+        min-width: 100%;
+        border-radius: 18px;
+        resize: none;
+        padding: 10px 14px;
+      }
+      .dz {
+        padding: 5px 12px;
+        border-radius: 20px;
+        background: var(--line);
+        color: var(--ink);
+        line-height: 1.2;
+        text-align: center;
+        margin-left: auto;
+      }
+      #chips button.over,
+      .dz.over {
+        outline: 3px dashed var(--btn);
+        outline-offset: 2px;
+        transform: scale(1.08);
+      }
+      .sw {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        border-radius: 50%;
+        border: 3px solid transparent;
+      }
+      .sw[aria-pressed="true"] {
+        border-color: var(--ink);
+        background-clip: padding-box;
+      }
+      :focus-visible {
+        outline: 3px solid var(--btn);
+        outline-offset: 2px;
+      }
+      #stage {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      #panel,
+      #help {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 40, 40, 0.45);
+        z-index: 5;
+      }
+      #panel.on,
+      #help.on {
+        display: flex;
+      }
+      #card,
+      #hc {
+        width: min(90%, 380px);
+        background: var(--bar);
+        border-radius: 28px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        animation: pop 0.35s cubic-bezier(0.3, 1.9, 0.5, 1);
+      }
+      @keyframes pop {
+        from {
+          transform: scale(0.3);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #card {
+          animation: none;
+        }
+      }
+      #ta {
+        min-height: 100px;
+        border-radius: 16px;
+        resize: none;
+      }
+      #meta {
+        font-size: 14px;
+        opacity: 0.85;
+        white-space: pre-line;
+      }
+      .row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="lang">
+      <div id="lc">
+        <b>Choose a language · 选择语言 · 언어 선택</b>
+        <div id="lb"></div>
+      </div>
+    </div>
+    <div class="bar" id="modes">
+      <button data-m="real" aria-pressed="true" data-i18n="mMemo"></button
+      ><button data-m="demo" aria-pressed="false" data-i18n="mDemo"></button
+      ><button id="rst" hidden data-i18n="reset"></button
+      ><span id="langs" style="margin-left: auto"></span>
+    </div>
+    <div class="bar">
+      <input
+        id="q"
+        type="search"
+        data-ph="search_ph"
+        data-al="search_al"
+      /><button id="und" data-i18n="undo"></button
+      ><select id="ord" data-al="sort_al"></select
+      ><button id="spd" hidden></button>
+    </div>
+    <div class="bar" id="chips">
+      <button data-f="all" aria-pressed="true" data-i18n="all"></button
+      ><button data-f="idea" aria-pressed="false">
+        <span class="ic">💡</span><span data-i18n="idea"></span></button
+      ><button data-f="todo" aria-pressed="false">
+        <span class="ic">🥤</span><span data-i18n="todo"></span></button
+      ><button data-f="chore" aria-pressed="false">
+        <span class="ic">🍬</span><span data-i18n="chore"></span></button
+      ><button data-f="arch" aria-pressed="false">
+        <span class="ic">🧊</span><span data-i18n="arch"></span></button
+      ><span id="bag" class="dz"
+        ><svg
+          class="ic"
+          width="26"
+          height="26"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M7.5 9.5C4.5 12 4 16.5 6 19.5c1.5 1.8 3.8 2 6 2s4.5-.2 6-2c2-3 1.5-7.5-1.5-10z"
+            fill="currentColor"
+            opacity=".9"
+          />
+          <path
+            d="M9.2 9.5l.8-3.6c.6-1.6 3.4-1.6 4 0l.8 3.6z"
+            fill="currentColor"
+          />
+          <path
+            d="M10.2 6.2C9 3.8 7.4 3.2 6.2 4.2M13.8 6.2c1.2-2.4 2.8-3 4-2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M8.5 13c-.4 1.8-.2 3.4.6 4.6"
+            fill="none"
+            stroke="#fff"
+            stroke-opacity=".55"
+            stroke-width="1.4"
+            stroke-linecap="round"
+          /></svg
+        ><span data-i18n="bag"></span
+      ></span>
+    </div>
+    <div id="stage">
+      <div id="help">
+        <div id="hc">
+          <b data-i18n="help_title"></b>
+          <div id="hl" data-i18nh="help_body"></div>
+          <button id="hok" class="go" data-i18n="got_it"></button>
+        </div>
+      </div>
+      <div id="panel">
+        <div id="card">
+          <div id="meta"></div>
+          <textarea id="ta" data-al="content_al"></textarea>
+          <select id="psp" data-al="type_al"></select>
+          <div class="row">
+            <button id="pb"></button><button id="pd"></button
+            ><button id="pa"></button>
+          </div>
+          <div class="row">
+            <button id="del" data-i18n="crush"></button
+            ><button id="ok" class="go" data-i18n="close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bar compose">
+      <textarea id="in" rows="2" data-ph="new_ph" data-al="new_al"></textarea
+      ><select id="sp" data-al="type_al"></select
+      ><span id="sw"></span
+      ><button id="add" class="go" data-i18n="pour"></button
+      ><button id="eat" aria-pressed="false"></button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>
