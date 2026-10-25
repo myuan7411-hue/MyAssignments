@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Idea Habitat · Jelly</title>
+    <title>MEMO · Interactive Design (2) Midterm Project</title>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
@@ -147,6 +147,42 @@
         resize: none;
         padding: 10px 14px;
       }
+      :root {
+        --field: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --field: #0b2222;
+        }
+      }
+      :root[data-theme="dark"] {
+        --field: #0b2222;
+      }
+      .field {
+        flex: 1 1 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--field);
+        border: 3px solid var(--btn);
+        border-radius: 26px;
+        padding: 2px 16px;
+      }
+      .field input {
+        border: 0;
+        background: transparent;
+        flex: 1;
+        min-width: 0;
+        font-size: 18px;
+        padding: 10px 0;
+        outline: none;
+        border-radius: 0;
+      }
+      .compose #in {
+        background: var(--field);
+        border: 3px solid var(--btn);
+        font-size: 18px;
+      }
       .dz {
         padding: 5px 12px;
         border-radius: 20px;
@@ -239,43 +275,113 @@
         flex-wrap: wrap;
         justify-content: flex-end;
       }
+
+      /* MEMO PROJECT TITLE */
+      .project-heading {
+        flex: none;
+        background: var(--bar);
+        text-align: center;
+        padding: 7px 10px 6px;
+        border-bottom: 1px solid var(--line);
+      }
+      .project-heading strong {
+        display: block;
+        font-size: 25px;
+        line-height: 1.1;
+        letter-spacing: 2px;
+        color: var(--ink);
+      }
+      .project-heading small {
+        display: block;
+        font-size: 11px;
+        line-height: 1.4;
+        opacity: 0.76;
+      }
+      @media (max-height: 650px) {
+        .project-heading {
+          padding: 4px 8px;
+        }
+        .project-heading strong {
+          font-size: 20px;
+        }
+        .project-heading small {
+          font-size: 10px;
+        }
+      }
     </style>
   </head>
   <body>
+    <script>
+      window.onerror = function (m, u, l) {
+        var d = document.createElement("div");
+        d.style.cssText =
+          "position:fixed;left:0;right:0;top:0;z-index:99;background:#b00020;color:#fff;font:14px sans-serif;padding:8px";
+        d.textContent =
+          "Error: " +
+          m +
+          " (" +
+          String(u || "")
+            .split("/")
+            .pop() +
+          ":" +
+          l +
+          ")";
+        document.body.appendChild(d);
+      };
+    </script>
+
     <div id="lang">
       <div id="lc">
         <b>Choose a language · 选择语言 · 언어 선택</b>
         <div id="lb"></div>
       </div>
     </div>
+
+    <header class="project-heading">
+      <strong>MEMO</strong>
+      <small>Interactive Design (2) · Midterm Project</small>
+    </header>
+
     <div class="bar" id="modes">
-      <button data-m="real" aria-pressed="true" data-i18n="mMemo"></button
-      ><button data-m="demo" aria-pressed="false" data-i18n="mDemo"></button
-      ><button id="rst" hidden data-i18n="reset"></button
-      ><span id="langs" style="margin-left: auto"></span>
+      <button data-m="real" aria-pressed="true" data-i18n="mMemo"></button>
+      <button data-m="demo" aria-pressed="false" data-i18n="mDemo"></button>
+      <button id="rst" hidden data-i18n="reset"></button>
+      <span id="langs" style="margin-left: auto"></span>
     </div>
+
     <div class="bar">
-      <input
-        id="q"
-        type="search"
-        data-ph="search_ph"
-        data-al="search_al"
-      /><button id="und" data-i18n="undo"></button
-      ><select id="ord" data-al="sort_al"></select
-      ><button id="spd" hidden></button>
+      <label class="field">
+        <span aria-hidden="true">🔍</span>
+        <input id="q" type="search" data-ph="search_ph" data-al="search_al" />
+      </label>
     </div>
+
+    <div class="bar">
+      <button id="und" data-i18n="undo"></button>
+      <select id="ord" data-al="sort_al"></select>
+      <button id="spd" hidden></button>
+    </div>
+
     <div class="bar" id="chips">
-      <button data-f="all" aria-pressed="true" data-i18n="all"></button
-      ><button data-f="idea" aria-pressed="false">
-        <span class="ic">💡</span><span data-i18n="idea"></span></button
-      ><button data-f="todo" aria-pressed="false">
-        <span class="ic">🥤</span><span data-i18n="todo"></span></button
-      ><button data-f="chore" aria-pressed="false">
-        <span class="ic">🍬</span><span data-i18n="chore"></span></button
-      ><button data-f="arch" aria-pressed="false">
-        <span class="ic">🧊</span><span data-i18n="arch"></span></button
-      ><span id="bag" class="dz"
-        ><svg
+      <button data-f="all" aria-pressed="true" data-i18n="all"></button>
+      <button data-f="idea" aria-pressed="false">
+        <span class="ic">💡</span>
+        <span data-i18n="idea"></span>
+      </button>
+      <button data-f="todo" aria-pressed="false">
+        <span class="ic">🥤</span>
+        <span data-i18n="todo"></span>
+      </button>
+      <button data-f="chore" aria-pressed="false">
+        <span class="ic">🍬</span>
+        <span data-i18n="chore"></span>
+      </button>
+      <button data-f="arch" aria-pressed="false">
+        <span class="ic">🧊</span>
+        <span data-i18n="arch"></span>
+      </button>
+      <span id="bag" class="dz">
+        <svg
           class="ic"
           width="26"
           height="26"
@@ -305,10 +411,12 @@
             stroke-opacity=".55"
             stroke-width="1.4"
             stroke-linecap="round"
-          /></svg
-        ><span data-i18n="bag"></span
-      ></span>
+          />
+        </svg>
+        <span data-i18n="bag"></span>
+      </span>
     </div>
+
     <div id="stage">
       <div id="help">
         <div id="hc">
@@ -317,30 +425,43 @@
           <button id="hok" class="go" data-i18n="got_it"></button>
         </div>
       </div>
+
       <div id="panel">
         <div id="card">
           <div id="meta"></div>
           <textarea id="ta" data-al="content_al"></textarea>
           <select id="psp" data-al="type_al"></select>
           <div class="row">
-            <button id="pb"></button><button id="pd"></button
-            ><button id="pa"></button>
+            <button id="pb"></button>
+            <button id="pd"></button>
+            <button id="pa"></button>
           </div>
           <div class="row">
-            <button id="del" data-i18n="crush"></button
-            ><button id="ok" class="go" data-i18n="close"></button>
+            <button id="del" data-i18n="crush"></button>
+            <button id="ok" class="go" data-i18n="close"></button>
           </div>
         </div>
       </div>
     </div>
+
     <div class="bar compose">
-      <textarea id="in" rows="2" data-ph="new_ph" data-al="new_al"></textarea
-      ><select id="sp" data-al="type_al"></select
-      ><span id="sw"></span
-      ><button id="add" class="go" data-i18n="pour"></button
-      ><button id="eat" aria-pressed="false"></button>
+      <textarea id="in" rows="2" data-ph="new_ph" data-al="new_al"></textarea>
+      <select id="sp" data-al="type_al"></select>
+      <span id="sw"></span>
+      <button id="add" class="go" data-i18n="pour"></button>
+      <button id="eat" aria-pressed="false"></button>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
     <script src="sketch.js"></script>
+    <script>
+      document.title = "MEMO · Interactive Design (2) Midterm Project";
+      if (typeof p5 === "undefined") {
+        document.body.insertAdjacentHTML(
+          "afterbegin",
+          '<div style="position:fixed;left:0;right:0;top:0;z-index:99;background:#b00020;color:#fff;font:14px sans-serif;padding:8px">p5.js did not load. Check your internet connection or the p5 script line.</div>',
+        );
+      }
+    </script>
   </body>
 </html>
